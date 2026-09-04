@@ -74,7 +74,7 @@ class SceneDelegate: UIViewController, UIWindowSceneDelegate, WKNavigationDelega
     var scheduleInterval: Float = 0.0       // the interval for execution
     var lastExecution: Date = .distantPast  // the last time the command was executed
     var nextExecution: Date = .distantFuture  // the next time the command is scheduled to be executed
-    private let commandQueue = DispatchQueue(label: "executeCommand", qos: .utility) // low priority, for executing commands
+    let commandQueue = DispatchQueue(label: "executeCommand", qos: .utility) // low priority, for executing commands (also reused by the agent CommandRunner)
     private var javascriptRunning = false // We can't execute JS while we are already executing JS.
     private var executeWebAssemblyCommandsRunning = false // We can't execute JS while we are already executing JS.
     // Buttons and toolbars:
