@@ -62,6 +62,7 @@ private struct BrowserWebViewRepresentable: UIViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) {}
 }
 
+@available(iOS 16.0, *)
 struct BrowserPanel: View {
     @ObservedObject var model: BrowserModel
 

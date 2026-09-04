@@ -16,6 +16,7 @@
 
 import SwiftUI
 
+@available(iOS 16.0, *)
 struct AgentView: View {
     /// The existing hterm terminal webview (created by SceneDelegate).
     let terminal: Webview

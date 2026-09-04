@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 16.0, *)
 struct ChatPanel: View {
     @ObservedObject var vm: AgentViewModel
     @State private var showSettings = false
@@ -74,6 +75,7 @@ struct ChatPanel: View {
 }
 
 /// A single chat row, styled by role.
+@available(iOS 16.0, *)
 private struct MessageRow: View {
     let message: ChatMessage
 
@@ -135,6 +137,7 @@ private struct MessageRow: View {
 }
 
 /// API key / model configuration.
+@available(iOS 16.0, *)
 struct AgentSettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var settings = AgentSettings.shared

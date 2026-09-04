@@ -3444,7 +3444,16 @@ class SceneDelegate: UIViewController, UIWindowSceneDelegate, WKNavigationDelega
             let window = UIWindow(windowScene: windowScene)
             contentView = ContentView()
             // if session.role == .windowApplication {
-            window.rootViewController = UIHostingController(rootView: contentView)
+            // Agentic layer: when enabled (default on iPad), host the 3-panel
+            // AgentView (chat + terminal + browser). It reuses contentView.webview
+            // as its terminal pane so all the wiring below stays valid. Otherwise
+            // fall back to the classic full-screen terminal (contentView).
+            if #available(iOS 16.0, *), AgentSettings.shared.agentModeEnabled, let cv = contentView {
+                let agentRoot = AgentView(terminal: cv.webview, host: self)
+                window.rootViewController = UIHostingController(rootView: agentRoot)
+            } else {
+                window.rootViewController = UIHostingController(rootView: contentView)
+            }
             window.autoresizesSubviews = true
             self.window = window
             window.makeKeyAndVisible()

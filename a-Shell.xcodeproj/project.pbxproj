@@ -7,6 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7BDF67F51FC48094729C9830 /* GeminiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1712829538260D0B62B8F71A /* GeminiService.swift */; };
+		2786181A30A5192E358BD145 /* GeminiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1712829538260D0B62B8F71A /* GeminiService.swift */; };
+		15B9C1AD549BDF6BA7B45FB2 /* GeminiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1712829538260D0B62B8F71A /* GeminiService.swift */; };
+		44536EFA9DABA02748E5D781 /* AgentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4CD7A8165BA40B4550FC67 /* AgentSettings.swift */; };
+		81F3E5D20E6551364D3F2ED0 /* AgentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4CD7A8165BA40B4550FC67 /* AgentSettings.swift */; };
+		E42F8124E172D175684B62EC /* AgentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4CD7A8165BA40B4550FC67 /* AgentSettings.swift */; };
+		5E6A7AD367DA27AA92E92FF9 /* AgentModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42074A59BD10A09FF0BA6FEF /* AgentModels.swift */; };
+		531829FABA866FEC9723778B /* AgentModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42074A59BD10A09FF0BA6FEF /* AgentModels.swift */; };
+		2284573EE5EFC97249407F0E /* AgentModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42074A59BD10A09FF0BA6FEF /* AgentModels.swift */; };
+		96894BFD22406E7F4E0410FF /* CommandRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0D6C02F5D84D9C50A28363 /* CommandRunner.swift */; };
+		E1683408531066D684660EAC /* CommandRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0D6C02F5D84D9C50A28363 /* CommandRunner.swift */; };
+		42F62CCF934260F69FFD6E35 /* CommandRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0D6C02F5D84D9C50A28363 /* CommandRunner.swift */; };
+		00D2EF478D938FFFD76EFA79 /* BrowserPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F7A3C6218FC563E154889 /* BrowserPanel.swift */; };
+		86062960280B1C3488F76EE0 /* BrowserPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F7A3C6218FC563E154889 /* BrowserPanel.swift */; };
+		91CE3B8D040D883BADF7F8D8 /* BrowserPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F7A3C6218FC563E154889 /* BrowserPanel.swift */; };
+		37C665B34C56800137DA6D17 /* ChatPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810386C99D78B6047FC14F75 /* ChatPanel.swift */; };
+		CFE7DEAED8A23FA6B5FFCC04 /* ChatPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810386C99D78B6047FC14F75 /* ChatPanel.swift */; };
+		B46A6BED35C9CD40F999EAD4 /* ChatPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810386C99D78B6047FC14F75 /* ChatPanel.swift */; };
+		E21F0C5DDABD7D32E2DA9A55 /* AgentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D845D7AE2E3C0086F58E913D /* AgentView.swift */; };
+		1FE6B67726D6284C230E6E57 /* AgentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D845D7AE2E3C0086F58E913D /* AgentView.swift */; };
+		673D0ECE2E3081F1A77BA828 /* AgentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D845D7AE2E3C0086F58E913D /* AgentView.swift */; };
 		2203367A28C4B8070027664C /* pico.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2232245E289695A9001BAE04 /* pico.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2208ACBF22CCE57E003985D6 /* String+C.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2208ACBE22CCE57E003985D6 /* String+C.swift */; };
 		2208ACC522D2026E003985D6 /* UIDevice+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2208ACC422D2026E003985D6 /* UIDevice+Name.swift */; };
@@ -1881,6 +1902,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1712829538260D0B62B8F71A /* GeminiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Agent/GeminiService.swift"; sourceTree = "<group>"; };
+		AE4CD7A8165BA40B4550FC67 /* AgentSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Agent/AgentSettings.swift"; sourceTree = "<group>"; };
+		42074A59BD10A09FF0BA6FEF /* AgentModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Agent/AgentModels.swift"; sourceTree = "<group>"; };
+		AD0D6C02F5D84D9C50A28363 /* CommandRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Agent/CommandRunner.swift"; sourceTree = "<group>"; };
+		E03F7A3C6218FC563E154889 /* BrowserPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Agent/BrowserPanel.swift"; sourceTree = "<group>"; };
+		810386C99D78B6047FC14F75 /* ChatPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Agent/ChatPanel.swift"; sourceTree = "<group>"; };
+		D845D7AE2E3C0086F58E913D /* AgentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Agent/AgentView.swift"; sourceTree = "<group>"; };
 		2208ACBE22CCE57E003985D6 /* String+C.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+C.swift"; path = "Util/String+C.swift"; sourceTree = SOURCE_ROOT; };
 		2208ACC422D2026E003985D6 /* UIDevice+Name.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIDevice+Name.swift"; path = "Util/UIDevice+Name.swift"; sourceTree = SOURCE_ROOT; };
 		2208ACC822D24703003985D6 /* WkWebViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WkWebViewExtension.swift; sourceTree = SOURCE_ROOT; };
@@ -2885,6 +2913,13 @@
 				22D23117231940B2005B0C12 /* ExtraCommands.swift */,
 				22984EEF22C93DBC00069497 /* SceneDelegate.swift */,
 				22984EF122C93DBC00069497 /* ContentView.swift */,
+				1712829538260D0B62B8F71A /* GeminiService.swift */,
+				AE4CD7A8165BA40B4550FC67 /* AgentSettings.swift */,
+				42074A59BD10A09FF0BA6FEF /* AgentModels.swift */,
+				AD0D6C02F5D84D9C50A28363 /* CommandRunner.swift */,
+				E03F7A3C6218FC563E154889 /* BrowserPanel.swift */,
+				810386C99D78B6047FC14F75 /* ChatPanel.swift */,
+				D845D7AE2E3C0086F58E913D /* AgentView.swift */,
 				22FB8FBF2E9BC2D500FDF274 /* extensionPoint.swift */,
 				2208ACC822D24703003985D6 /* WkWebViewExtension.swift */,
 				22BF62282314223D00FEA585 /* WKWebView+KeyCommands.swift */,
@@ -4184,6 +4219,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BDF67F51FC48094729C9830 /* GeminiService.swift in Sources */,
+				44536EFA9DABA02748E5D781 /* AgentSettings.swift in Sources */,
+				5E6A7AD367DA27AA92E92FF9 /* AgentModels.swift in Sources */,
+				96894BFD22406E7F4E0410FF /* CommandRunner.swift in Sources */,
+				00D2EF478D938FFFD76EFA79 /* BrowserPanel.swift in Sources */,
+				37C665B34C56800137DA6D17 /* ChatPanel.swift in Sources */,
+				E21F0C5DDABD7D32E2DA9A55 /* AgentView.swift in Sources */,
 				224A903B2ADD0999006DB9CC /* ExtraCommands.swift in Sources */,
 				224A903C2ADD0999006DB9CC /* AppDelegate.swift in Sources */,
 				224A903D2ADD0999006DB9CC /* KBWebViewBase.m in Sources */,
@@ -4212,6 +4254,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2786181A30A5192E358BD145 /* GeminiService.swift in Sources */,
+				81F3E5D20E6551364D3F2ED0 /* AgentSettings.swift in Sources */,
+				531829FABA866FEC9723778B /* AgentModels.swift in Sources */,
+				E1683408531066D684660EAC /* CommandRunner.swift in Sources */,
+				86062960280B1C3488F76EE0 /* BrowserPanel.swift in Sources */,
+				CFE7DEAED8A23FA6B5FFCC04 /* ChatPanel.swift in Sources */,
+				1FE6B67726D6284C230E6E57 /* AgentView.swift in Sources */,
 				22D23118231940B3005B0C12 /* ExtraCommands.swift in Sources */,
 				22984EEE22C93DBC00069497 /* AppDelegate.swift in Sources */,
 				22984EF022C93DBC00069497 /* SceneDelegate.swift in Sources */,
@@ -4240,6 +4289,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15B9C1AD549BDF6BA7B45FB2 /* GeminiService.swift in Sources */,
+				E42F8124E172D175684B62EC /* AgentSettings.swift in Sources */,
+				2284573EE5EFC97249407F0E /* AgentModels.swift in Sources */,
+				42F62CCF934260F69FFD6E35 /* CommandRunner.swift in Sources */,
+				91CE3B8D040D883BADF7F8D8 /* BrowserPanel.swift in Sources */,
+				B46A6BED35C9CD40F999EAD4 /* ChatPanel.swift in Sources */,
+				673D0ECE2E3081F1A77BA828 /* AgentView.swift in Sources */,
 				229D2477257931E4004A78AC /* ExtraCommands.swift in Sources */,
 				229D2478257931E4004A78AC /* AppDelegate.swift in Sources */,
 				22675A16271C24F400459BEF /* KBWebViewBase.m in Sources */,

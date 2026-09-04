@@ -8,6 +8,7 @@
 
 import Foundation
 import Security
+import UIKit
 
 final class AgentSettings: ObservableObject {
     static let shared = AgentSettings()
@@ -29,9 +30,12 @@ final class AgentSettings: ObservableObject {
     private let defaults = UserDefaults.standard
 
     private init() {
+        // Default the agentic experience ON for iPad (the target device for this
+        // rebuild) and OFF elsewhere. The user can override either way.
+        let defaultEnabled = UIDevice.current.userInterfaceIdiom == .pad
         defaults.register(defaults: [
             Keys.model: Self.defaultModel,
-            Keys.enabled: false,
+            Keys.enabled: defaultEnabled,
             Keys.confirm: false,
             Keys.thinking: "LOW",
         ])
