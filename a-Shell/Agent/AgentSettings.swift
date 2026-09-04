@@ -13,8 +13,10 @@ import UIKit
 final class AgentSettings: ObservableObject {
     static let shared = AgentSettings()
 
-    // Default to the newest flash-lite (see docs/AGENTIC.md). User-overridable.
-    static let defaultModel = "gemini-3.1-flash-lite"
+    // A real, verifiable flash-lite model. Version strings change often, so the
+    // settings screen can fetch the live list from ListModels; this is just the
+    // starting default. User-overridable.
+    static let defaultModel = "gemini-2.5-flash-lite"
 
     private enum Keys {
         static let model = "agentModel"

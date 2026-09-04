@@ -144,6 +144,9 @@ struct AgentSettingsView: View {
     @State private var apiKey: String = ""
     @State private var model: String = ""
     @State private var thinking: String = "LOW"
+    @State private var availableModels: [String] = []
+    @State private var isFetchingModels = false
+    @State private var fetchError: String?
 
     private let thinkingLevels = ["OFF", "LOW", "MEDIUM", "HIGH"]
 
@@ -158,9 +161,26 @@ struct AgentSettingsView: View {
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Model") {
-                    TextField("model", text: $model)
+                    TextField("model id", text: $model)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
+                    if !availableModels.isEmpty {
+                        Picker("Available", selection: $model) {
+                            ForEach(availableModels, id: \.self) { Text($0).tag($0) }
+                        }
+                    }
+                    Button {
+                        Task { await fetchModels() }
+                    } label: {
+                        HStack {
+                            Text("Fetch available models")
+                            if isFetchingModels { Spacer(); ProgressView() }
+                        }
+                    }
+                    .disabled(isFetchingModels || apiKey.isEmpty)
+                    if let fetchError {
+                        Text(fetchError).font(.caption).foregroundStyle(.red)
+                    }
                     Picker("Thinking", selection: $thinking) {
                         ForEach(thinkingLevels, id: \.self) { Text($0) }
                     }
@@ -188,6 +208,32 @@ struct AgentSettingsView: View {
                 model = settings.model
                 thinking = settings.thinkingLevel ?? "OFF"
             }
+        }
+    }
+
+    @MainActor
+    private func fetchModels() async {
+        fetchError = nil
+        isFetchingModels = true
+        defer { isFetchingModels = false }
+        // Use the key currently typed in the field (may not be saved yet).
+        let service = GeminiService(apiKey: apiKey, model: model, thinkingLevel: nil)
+        do {
+            let all = try await service.listModels()
+            // Surface flash-lite / flash first, but keep the full list available.
+            availableModels = all.sorted { a, b in
+                func rank(_ s: String) -> Int {
+                    if s.contains("flash-lite") { return 0 }
+                    if s.contains("flash") { return 1 }
+                    return 2
+                }
+                return rank(a) == rank(b) ? a > b : rank(a) < rank(b)
+            }
+            if !availableModels.contains(model), let first = availableModels.first {
+                model = first
+            }
+        } catch {
+            fetchError = error.localizedDescription
         }
     }
 }

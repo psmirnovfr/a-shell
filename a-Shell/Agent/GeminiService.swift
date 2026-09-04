@@ -91,6 +91,38 @@ struct GeminiService {
         URL(string: "https://generativelanguage.googleapis.com/v1beta/models/\(model):generateContent")!
     }
 
+    // MARK: - List available models
+
+    /// Fetch the model IDs available to this API key that support generateContent.
+    /// This is the authoritative "what's current" source — version strings change
+    /// frequently, so we never hardcode "the newest".
+    func listModels() async throws -> [String] {
+        guard !apiKey.isEmpty else { throw GeminiError.missingAPIKey }
+        let url = URL(string: "https://generativelanguage.googleapis.com/v1beta/models")!
+        var request = URLRequest(url: url)
+        request.setValue(apiKey, forHTTPHeaderField: "x-goog-api-key")
+        let (data, response) = try await session.data(for: request)
+        guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
+            let status = (response as? HTTPURLResponse)?.statusCode ?? -1
+            throw GeminiError.badResponse(status: status,
+                                          body: String(data: data, encoding: .utf8) ?? "")
+        }
+        guard let root = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let models = root["models"] as? [[String: Any]] else {
+            throw GeminiError.malformedResponse("no models array")
+        }
+        var ids: [String] = []
+        for m in models {
+            let methods = m["supportedGenerationMethods"] as? [String] ?? []
+            guard methods.contains("generateContent") else { continue }
+            if let name = m["name"] as? String {
+                // API returns "models/gemini-…"; strip the prefix for the request path.
+                ids.append(name.hasPrefix("models/") ? String(name.dropFirst("models/".count)) : name)
+            }
+        }
+        return ids.sorted()
+    }
+
     // MARK: - History builders
     //
     // `contents` is an array of Gemini "content" dictionaries. Callers keep this

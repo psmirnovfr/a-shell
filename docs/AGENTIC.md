@@ -156,16 +156,12 @@ AgentViewModel.send(userText)
 
 ### Gemini model
 
-As of 2026-09 the current strings are (see `ai.google.dev/gemini-api/docs`):
-
-| Purpose | Model string |
-|---------|--------------|
-| Latest Flash-Lite (default here) | `gemini-3.1-flash-lite` |
-| Latest Flash | `gemini-3.8-flash` |
-
-The model is configurable in `AgentSettings` (default `gemini-3.1-flash-lite`).
-The user asked for "3.5 flash lite"; that exact string is not current, so we default
-to the newest flash-lite and let the user override it in settings.
+**Do not hardcode "the newest" model** — version strings change frequently and are
+easy to get wrong. The default is `gemini-2.5-flash-lite` (a real, verifiable
+flash-lite id). The settings screen has a **Fetch available models** button that calls
+the `ListModels` endpoint (`GET /v1beta/models`, `GeminiService.listModels()`) with the
+user's key and shows the actually-available ids in a picker — that is the authoritative
+source for "what's current". The model field is also free-text for manual override.
 
 ---
 
