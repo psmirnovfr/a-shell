@@ -40,7 +40,14 @@ Legend: `[x]` done · `[~]` partial · `[ ]` todo
 - [x] Xcode project integration (files added to the 3 app targets in `project.pbxproj`,
       `plutil -lint` OK, `xcodebuild -list` OK)
 - [x] Feature flag wired in `SceneDelegate.scene(willConnectTo:)` (gated `#available(iOS 16)`)
-- [ ] `BuildProject` passes — **BLOCKED in this environment** (see *Build environment*)
+- [x] All 7 agent files verified: 6 via `swiftc -typecheck` vs iOS 16 SDK; **`CommandRunner`
+      typechecks clean against the REAL `ios_system.xcframework`** (see command below)
+- [~] Framework deps downloaded: `swift run --package-path xcfs` + cpython tarball done
+      → **1.6 GB on disk**. But **47 of 157 referenced xcframeworks are still missing**
+      because this checkout's `project.pbxproj` references a newer set than its bundled
+      `xcfs/Package.swift` provides (see *Missing frameworks*).
+- [ ] `BuildProject` passes — blocked until the 47 missing frameworks are sourced +
+      a signing team is set (device) / signing disabled (simulator)
 - [ ] On-device smoke test (iPad) — needs a real device + API key
 
 Keep this list current — it is the single source of truth for "where are we".
@@ -58,10 +65,52 @@ are pre-existing and unrelated to the agent code:
 2. **No signing.** No Apple account for Team `VG8Z23C8YL` and no provisioning profiles
    for `AsheKube.app.a-Shell*`.
 
-To actually build/run, on a machine set up for a-Shell development:
-- fetch/build the xcframeworks per the upstream a-Shell build instructions
-  (the `xcfs` Swift package + the cpython aux frameworks), then
-- set a valid signing team, then `BuildProject` / run on an iPad.
+### Fetching frameworks (done here, ~1.6 GB)
+
+```
+swift run --package-path xcfs        # ~60 xcframeworks → xcfs/.build/artifacts (704 MB)
+curl -OL https://github.com/holzschu/a-shell/releases/download/cpython_05_22/pythonInstall.tar.gz
+tar xzf pythonInstall.tar.gz         # cpython/Library + cpython/XcFrameworks (~893 MB)
+```
+Both `cpython/` and `xcfs/.build/` are git-ignored — never commit them.
+
+### Missing frameworks (blocks a full link)
+
+`project.pbxproj` references **157** xcframeworks; after the fetch above **110 are
+present, 47 are missing**. The missing ones aren't even declared in this checkout's
+`xcfs/Package.swift`, i.e. the project is newer than the bundled download script:
+
+- scientific/geo: `openblas`, `libgfortran`, `libpng`, `libgdal`, `libgeos(_c)`,
+  `libproj`, `libspatialindex(_c)`
+- TeX engines: `xetex(A)`, `euptex(A)`, `ptexenc(A)`, `xdvipdfmx(A)`
+- ssh/misc: `ssh_agent`, `sshd`, `ssh_cmdA`, `wrapper`, `perlC`, `blink`, `openssl`
+
+Xcode validates framework presence *before* compiling Swift, so the in-project build
+bails early until these are sourced. To get them: use the **upstream** a-Shell's current
+`xcfs/Package.swift` + Python-aux scientific tarball (newer than what's committed here).
+Re-run the inventory to see what's still missing:
+```
+grep -ohE "[A-Za-z0-9_./-]+\.xcframework" a-Shell.xcodeproj/project.pbxproj | sort -u
+```
+
+### Verifying the agent code without a full build
+
+`CommandRunner` (the only file that needs the ios_system C module) typechecks against
+the real framework:
+```
+SLICE="$PWD/xcfs/.build/artifacts/xcfs/ios_system/ios_system.xcframework/ios-arm64_x86_64-simulator"
+SDK=$(xcrun --sdk iphonesimulator --show-sdk-path)
+xcrun -sdk iphonesimulator swiftc -typecheck -target arm64-apple-ios16.0-simulator -sdk "$SDK" \
+  -F "$SLICE" a-Shell/Agent/GeminiService.swift a-Shell/Agent/AgentSettings.swift \
+  a-Shell/Agent/AgentModels.swift a-Shell/Agent/CommandRunner.swift <SceneDelegate-stub>
+```
+(stub = a tiny `class SceneDelegate: UIViewController` with `persistentIdentifier/width/
+height/endOfTransmission/commandQueue` + `String.toCString()` → `strdup`.)
+
+### Then, to actually build/run
+- source the 47 missing frameworks (upstream Package.swift + Python-aux), then
+- device: set a valid signing team; **simulator**: no signing needed
+  (`CODE_SIGNING_ALLOWED=NO`), then `BuildProject` / run.
 
 Because the frameworks are absent, the agent Swift was validated with
 `swiftc -typecheck` against the iOS 16 simulator SDK instead (6/7 files, all clean;
