@@ -30,16 +30,51 @@ Legend: `[x]` done · `[~]` partial · `[ ]` todo
 
 - [x] Branch `agentic-ipad` created & pushed to origin
 - [x] Architecture doc (this file)
-- [~] `GeminiService.swift` — API client (streaming + function calling)
-- [~] `AgentModels.swift` — chat/tool models + `AgentViewModel` tool loop
-- [~] `CommandRunner` — headless bash execution capturing stdout as `String`
-- [~] `AgentView.swift` — 3-panel SwiftUI layout + Chat/Browser panels
-- [ ] Xcode project integration (add files to the 3 app targets in `project.pbxproj`)
-- [ ] Feature flag wired in `SceneDelegate.scene(willConnectTo:)`
-- [ ] `BuildProject` passes
-- [ ] On-device smoke test (iPad)
+- [x] `GeminiService.swift` — API client (function calling) — *typechecks vs iOS 16 SDK*
+- [x] `AgentModels.swift` — chat/tool models + `AgentViewModel` tool loop — *typechecks*
+- [x] `AgentSettings.swift` — Keychain key + model + flag — *typechecks*
+- [x] `CommandRunner` — headless bash execution capturing stdout as `String`
+      *(mirrors executeCommand; can't be isolated-typechecked — needs the real
+      ios_system module, so verify in a full build)*
+- [x] `AgentView.swift` / `ChatPanel.swift` / `BrowserPanel.swift` — 3-panel UI — *typecheck*
+- [x] Xcode project integration (files added to the 3 app targets in `project.pbxproj`,
+      `plutil -lint` OK, `xcodebuild -list` OK)
+- [x] Feature flag wired in `SceneDelegate.scene(willConnectTo:)` (gated `#available(iOS 16)`)
+- [ ] `BuildProject` passes — **BLOCKED in this environment** (see *Build environment*)
+- [ ] On-device smoke test (iPad) — needs a real device + API key
 
 Keep this list current — it is the single source of truth for "where are we".
+
+## Build environment (why `BuildProject` can't pass here)
+
+`BuildProject` fails in ~2.7s **before any Swift is compiled**, for two reasons that
+are pre-existing and unrelated to the agent code:
+
+1. **Missing prebuilt XCFrameworks.** a-Shell links ~80 binary xcframeworks
+   (`ios_system.xcframework`, `clang`, `python`/`cpython` aux frameworks, TeX, etc.)
+   that live under `xcfs/.build/artifacts/…` and `cpython/…`. They are produced by a
+   separate build step and are **not present in this checkout**, so linking cannot
+   start. Upstream `master` fails here too.
+2. **No signing.** No Apple account for Team `VG8Z23C8YL` and no provisioning profiles
+   for `AsheKube.app.a-Shell*`.
+
+To actually build/run, on a machine set up for a-Shell development:
+- fetch/build the xcframeworks per the upstream a-Shell build instructions
+  (the `xcfs` Swift package + the cpython aux frameworks), then
+- set a valid signing team, then `BuildProject` / run on an iPad.
+
+Because the frameworks are absent, the agent Swift was validated with
+`swiftc -typecheck` against the iOS 16 simulator SDK instead (6/7 files, all clean;
+`CommandRunner` reviewed against the existing `executeCommand`). Command to re-run:
+
+```
+SDK=$(xcrun --sdk iphonesimulator --show-sdk-path)
+xcrun -sdk iphonesimulator swiftc -typecheck -target arm64-apple-ios16.0-simulator \
+  -sdk "$SDK" a-Shell/Agent/GeminiService.swift a-Shell/Agent/AgentSettings.swift \
+  a-Shell/Agent/AgentModels.swift a-Shell/Agent/ChatPanel.swift \
+  a-Shell/Agent/BrowserPanel.swift
+```
+(For `AgentView.swift` add a small `Webview` stub — see git history of this doc.)
 
 ---
 
